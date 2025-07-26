@@ -1,0 +1,29 @@
+{
+  "name": "airdrop-router-hardhat",
+  "version": "1.0.0",
+  "description": "Airdrop Router Hardhat project with custom implementations",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.ts",
+    "node": "npx hardhat node"
+  },
+  "keywords": [
+    "hardhat",
+    "airdrop",
+    "solidity",
+    "ethereum"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.26.1",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "ethers": "^6.0.0"
+  }
+}
