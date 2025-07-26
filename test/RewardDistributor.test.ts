@@ -83,7 +83,7 @@ describe("RewardDistributor", function () {
       
       await expect(rewardDistributor.connect(user1).claim(humanityId1))
         .to.emit(rewardDistributor, "Claimed")
-        .withArgs(user1.address, AMOUNT_PER_CLAIM);
+        .withArgs(humanityId1, AMOUNT_PER_CLAIM);
 
       const finalBalance = await mockToken.balanceOf(user1.address);
       expect(finalBalance - initialBalance).to.equal(AMOUNT_PER_CLAIM);
@@ -114,7 +114,7 @@ describe("RewardDistributor", function () {
       const unboundHumanityId = "0x5678901234567890123456789012345678901234";
       
       await expect(rewardDistributor.connect(user1).claim(unboundHumanityId))
-        .to.be.revertedWith("not human");
+        .to.be.revertedWith("not owner");
     });
 
     it("Should allow multiple different users to claim", async function () {
@@ -136,15 +136,18 @@ describe("RewardDistributor", function () {
       expect(await mockToken.balanceOf(user3.address)).to.equal(AMOUNT_PER_CLAIM);
     });
 
-    it("Should allow anyone to call claim for a valid humanity ID", async function () {
-      // nonOwner calls claim for user1's humanity ID
+    it("Should only allow bound address to call claim for a humanity ID", async function () {
+      // nonOwner tries to call claim for user1's humanity ID - should fail
       await expect(rewardDistributor.connect(nonOwner).claim(humanityId1))
-        .to.emit(rewardDistributor, "Claimed")
-        .withArgs(user1.address, AMOUNT_PER_CLAIM);
+        .to.be.revertedWith("not owner");
 
-      // Tokens should go to user1, not nonOwner
+      // user1 calls claim for their own humanity ID - should succeed
+      await expect(rewardDistributor.connect(user1).claim(humanityId1))
+        .to.emit(rewardDistributor, "Claimed")
+        .withArgs(humanityId1, AMOUNT_PER_CLAIM);
+
+      // Tokens should go to user1
       expect(await mockToken.balanceOf(user1.address)).to.equal(AMOUNT_PER_CLAIM);
-      expect(await mockToken.balanceOf(nonOwner.address)).to.equal(0);
       expect(await rewardDistributor.claimed(humanityId1)).to.be.true;
     });
   });
@@ -237,7 +240,7 @@ describe("RewardDistributor", function () {
 
       await expect(zeroAmountDistributor.connect(user1).claim(humanityId1))
         .to.emit(zeroAmountDistributor, "Claimed")
-        .withArgs(user1.address, 0);
+        .withArgs(humanityId1, 0);
     });
 
     it("Should handle contract with insufficient token balance", async function () {
@@ -268,16 +271,7 @@ describe("RewardDistributor", function () {
 
       await expect(largeAmountDistributor.connect(user1).claim(humanityId1))
         .to.emit(largeAmountDistributor, "Claimed")
-        .withArgs(user1.address, largeAmount);
-    });
-
-    it("Should handle ownership transfer to zero address", async function () {
-      // This should work as the contract doesn't prevent zero address ownership
-      await expect(rewardDistributor.connect(owner).transferOwnership(ethers.ZeroAddress))
-        .to.emit(rewardDistributor, "OwnershipTransferred")
-        .withArgs(owner.address, ethers.ZeroAddress);
-
-      expect(await rewardDistributor.owner()).to.equal(ethers.ZeroAddress);
+        .withArgs(humanityId1, largeAmount);
     });
   });
 

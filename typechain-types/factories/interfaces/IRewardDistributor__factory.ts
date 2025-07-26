@@ -17,15 +17,9 @@ const _abi = [
         type: "bytes20",
       },
     ],
-    name: "claimed",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
+    name: "claim",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

@@ -21,15 +21,15 @@ import type {
 } from "../common";
 
 export interface IRewardDistributorInterface extends Interface {
-  getFunction(nameOrSignature: "claimed" | "withdraw"): FunctionFragment;
+  getFunction(nameOrSignature: "claim" | "withdraw"): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "claimed", values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: "claim", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [BigNumberish]
   ): string;
 
-  decodeFunctionResult(functionFragment: "claimed", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 }
 
@@ -76,7 +76,7 @@ export interface IRewardDistributor extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  claimed: TypedContractMethod<[humanityID: BytesLike], [boolean], "view">;
+  claim: TypedContractMethod<[humanityID: BytesLike], [void], "nonpayable">;
 
   withdraw: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
 
@@ -85,8 +85,8 @@ export interface IRewardDistributor extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "claimed"
-  ): TypedContractMethod<[humanityID: BytesLike], [boolean], "view">;
+    nameOrSignature: "claim"
+  ): TypedContractMethod<[humanityID: BytesLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;

@@ -81,10 +81,10 @@ export interface RewardDistributorInterface extends Interface {
 }
 
 export namespace ClaimedEvent {
-  export type InputTuple = [to: AddressLike, amount: BigNumberish];
-  export type OutputTuple = [to: string, amount: bigint];
+  export type InputTuple = [humanityID: BytesLike, amount: BigNumberish];
+  export type OutputTuple = [humanityID: string, amount: bigint];
   export interface OutputObject {
-    to: string;
+    humanityID: string;
     amount: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -234,7 +234,7 @@ export interface RewardDistributor extends BaseContract {
   >;
 
   filters: {
-    "Claimed(address,uint256)": TypedContractEvent<
+    "Claimed(bytes20,uint256)": TypedContractEvent<
       ClaimedEvent.InputTuple,
       ClaimedEvent.OutputTuple,
       ClaimedEvent.OutputObject

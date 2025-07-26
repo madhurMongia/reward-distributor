@@ -36,7 +36,7 @@ contract MockERC20 is IERC20 {
         return _totalSupply;
     }
     
-    function balanceOf(address account) external view override returns (uint256) {
+    function balanceOf(address account) external view returns (uint256) {
         return _balances[account];
     }
     
@@ -51,7 +51,7 @@ contract MockERC20 is IERC20 {
         return true;
     }
     
-    function transferFrom(address from, address to, uint256 amount) external override returns (bool) {
+    function transferFrom(address from, address to, uint256 amount) external returns (bool) {
         if (transferFromShouldFail) {
             return false;
         }

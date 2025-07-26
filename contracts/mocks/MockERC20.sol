@@ -5,7 +5,7 @@ import "../../contracts/interfaces/IERC20.sol";
 
 /**
  * @title MockERC20
- * @notice A mock ERC20 token for testing purposes
+ * @notice A mock ERC20 token for testing purposes.
  */
 contract MockERC20 is IERC20 {
     mapping(address => uint256) private _balances;
@@ -36,7 +36,7 @@ contract MockERC20 is IERC20 {
         return _totalSupply;
     }
     
-    function balanceOf(address account) external view override returns (uint256) {
+    function balanceOf(address account) external view returns (uint256) {
         return _balances[account];
     }
     
@@ -51,7 +51,7 @@ contract MockERC20 is IERC20 {
         return true;
     }
     
-    function transferFrom(address from, address to, uint256 amount) external override returns (bool) {
+    function transferFrom(address from, address to, uint256 amount) external returns (bool) {
         if (transferFromShouldFail) {
             return false;
         }
@@ -74,7 +74,7 @@ contract MockERC20 is IERC20 {
         return _allowances[owner][spender];
     }
     
-    // Test helper functions
+    // Test helper functions.
     function mint(address to, uint256 amount) external {
         _balances[to] += amount;
         _totalSupply += amount;
