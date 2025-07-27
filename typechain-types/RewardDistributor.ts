@@ -44,7 +44,7 @@ export interface RewardDistributorInterface extends Interface {
     functionFragment: "amountPerClaim",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "claim", values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: "claim", values?: undefined): string;
   encodeFunctionData(functionFragment: "claimed", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "crossChainProofOfHumanity",
@@ -164,7 +164,7 @@ export interface RewardDistributor extends BaseContract {
 
   amountPerClaim: TypedContractMethod<[], [bigint], "view">;
 
-  claim: TypedContractMethod<[humanityID: BytesLike], [void], "nonpayable">;
+  claim: TypedContractMethod<[], [void], "nonpayable">;
 
   claimed: TypedContractMethod<[arg0: BytesLike], [boolean], "view">;
 
@@ -191,7 +191,7 @@ export interface RewardDistributor extends BaseContract {
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "claim"
-  ): TypedContractMethod<[humanityID: BytesLike], [void], "nonpayable">;
+  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "claimed"
   ): TypedContractMethod<[arg0: BytesLike], [boolean], "view">;

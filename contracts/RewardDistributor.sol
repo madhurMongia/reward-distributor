@@ -89,16 +89,14 @@ contract RewardDistributor is IRewardDistributor {
     /**
      * @notice Allows a verified human to claim their reward tokens
      * @dev Verifies the humanity ID through the Proof of Humanity contract and ensures no double claiming
-     * @param humanityID The unique identifier for the verified human (bytes20)
      * - The humanity ID must be bound to a valid human account
      * - The account must be verified as human in the Proof of Humanity Registry
      * - The humanity ID must not have already claimed rewards
      */
-    function claim(bytes20 humanityID) external {
+    function claim() external {
         // check if the humanityID is valid
-        address account = crossChainProofOfHumanity.boundTo(humanityID);
-        require(account == msg.sender, "not owner");
-        require(crossChainProofOfHumanity.isHuman(account), "not human");
+        require(crossChainProofOfHumanity.isHuman(msg.sender), "not human");
+        bytes20 humanityID = crossChainProofOfHumanity.humanityOf(msg.sender);
         // check if the humanityID has already claimed the reward
         require(!claimed[humanityID], "already claimed");
 
@@ -106,7 +104,7 @@ contract RewardDistributor is IRewardDistributor {
         claimed[humanityID] = true;
 
         // transfer the tokens
-        token.transfer(account, amountPerClaim);
+        token.transfer(msg.sender, amountPerClaim);
         emit Claimed(humanityID, amountPerClaim);
     }
     

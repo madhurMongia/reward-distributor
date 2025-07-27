@@ -10,13 +10,7 @@ import type {
 
 const _abi = [
   {
-    inputs: [
-      {
-        internalType: "bytes20",
-        name: "humanityID",
-        type: "bytes20",
-      },
-    ],
+    inputs: [],
     name: "claim",
     outputs: [],
     stateMutability: "nonpayable",

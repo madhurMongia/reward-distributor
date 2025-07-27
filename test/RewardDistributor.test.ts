@@ -81,7 +81,7 @@ describe("RewardDistributor", function () {
     it("Should allow verified human to claim rewards", async function () {
       const initialBalance = await mockToken.balanceOf(user1.address);
       
-      await expect(rewardDistributor.connect(user1).claim(humanityId1))
+      await expect(rewardDistributor.connect(user1).claim())
         .to.emit(rewardDistributor, "Claimed")
         .withArgs(humanityId1, AMOUNT_PER_CLAIM);
 
@@ -92,63 +92,39 @@ describe("RewardDistributor", function () {
 
     it("Should prevent double claiming", async function () {
       // First claim should succeed
-      await rewardDistributor.connect(user1).claim(humanityId1);
+      await rewardDistributor.connect(user1).claim();
       expect(await rewardDistributor.claimed(humanityId1)).to.be.true;
 
       // Second claim should fail
-      await expect(rewardDistributor.connect(user1).claim(humanityId1))
+      await expect(rewardDistributor.connect(user1).claim())
         .to.be.revertedWith("already claimed");
     });
 
     it("Should reject claims from non-human addresses", async function () {
-      // Setup a humanity ID bound to user1 but mark user1 as not human
-      const nonHumanHumanityId = "0x4567890123456789012345678901234567890123";
-      await mockProofOfHumanity.setBoundTo(nonHumanHumanityId, user1.address);
+      // Mark user1 as not human
       await mockProofOfHumanity.setIsHuman(user1.address, false);
 
-      await expect(rewardDistributor.connect(user1).claim(nonHumanHumanityId))
+      await expect(rewardDistributor.connect(user1).claim())
         .to.be.revertedWith("not human");
-    });
-
-    it("Should reject claims for unbound humanity IDs", async function () {
-      const unboundHumanityId = "0x5678901234567890123456789012345678901234";
-      
-      await expect(rewardDistributor.connect(user1).claim(unboundHumanityId))
-        .to.be.revertedWith("not owner");
     });
 
     it("Should allow multiple different users to claim", async function () {
       // User1 claims
-      await rewardDistributor.connect(user1).claim(humanityId1);
+      await rewardDistributor.connect(user1).claim();
       expect(await rewardDistributor.claimed(humanityId1)).to.be.true;
 
       // User2 claims
-      await rewardDistributor.connect(user2).claim(humanityId2);
+      await rewardDistributor.connect(user2).claim();
       expect(await rewardDistributor.claimed(humanityId2)).to.be.true;
 
       // User3 claims
-      await rewardDistributor.connect(user3).claim(humanityId3);
+      await rewardDistributor.connect(user3).claim();
       expect(await rewardDistributor.claimed(humanityId3)).to.be.true;
 
       // Check balances
       expect(await mockToken.balanceOf(user1.address)).to.equal(AMOUNT_PER_CLAIM);
       expect(await mockToken.balanceOf(user2.address)).to.equal(AMOUNT_PER_CLAIM);
       expect(await mockToken.balanceOf(user3.address)).to.equal(AMOUNT_PER_CLAIM);
-    });
-
-    it("Should only allow bound address to call claim for a humanity ID", async function () {
-      // nonOwner tries to call claim for user1's humanity ID - should fail
-      await expect(rewardDistributor.connect(nonOwner).claim(humanityId1))
-        .to.be.revertedWith("not owner");
-
-      // user1 calls claim for their own humanity ID - should succeed
-      await expect(rewardDistributor.connect(user1).claim(humanityId1))
-        .to.emit(rewardDistributor, "Claimed")
-        .withArgs(humanityId1, AMOUNT_PER_CLAIM);
-
-      // Tokens should go to user1
-      expect(await mockToken.balanceOf(user1.address)).to.equal(AMOUNT_PER_CLAIM);
-      expect(await rewardDistributor.claimed(humanityId1)).to.be.true;
     });
   });
 
@@ -238,7 +214,7 @@ describe("RewardDistributor", function () {
         await mockProofOfHumanity.getAddress()
       );
 
-      await expect(zeroAmountDistributor.connect(user1).claim(humanityId1))
+      await expect(zeroAmountDistributor.connect(user1).claim())
         .to.emit(zeroAmountDistributor, "Claimed")
         .withArgs(humanityId1, 0);
     });
@@ -253,7 +229,7 @@ describe("RewardDistributor", function () {
       );
 
       // This should fail because the contract has no tokens
-      await expect(emptyDistributor.connect(user1).claim(humanityId1))
+      await expect(emptyDistributor.connect(user1).claim())
         .to.be.revertedWith("Insufficient balance");
     });
 
@@ -269,7 +245,7 @@ describe("RewardDistributor", function () {
       // Mint large amount of tokens to the contract
       await mockToken.mint(await largeAmountDistributor.getAddress(), largeAmount);
 
-      await expect(largeAmountDistributor.connect(user1).claim(humanityId1))
+      await expect(largeAmountDistributor.connect(user1).claim())
         .to.emit(largeAmountDistributor, "Claimed")
         .withArgs(humanityId1, largeAmount);
     });
@@ -277,7 +253,7 @@ describe("RewardDistributor", function () {
 
   describe("Gas Optimization Tests", function () {
     it("Should have reasonable gas costs for claim function", async function () {
-      const tx = await rewardDistributor.connect(user1).claim(humanityId1);
+      const tx = await rewardDistributor.connect(user1).claim();
       const receipt = await tx.wait();
       
       // Gas usage should be reasonable (less than 100k gas)

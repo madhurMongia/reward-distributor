@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.25;
 
-import "../../contracts/interfaces/ICrossChainProofOfHumanity.sol";
+import "../interfaces/ICrossChainProofOfHumanity.sol";
 
 /**
  * @title MockCrossChainProofOfHumanity
@@ -9,7 +9,7 @@ import "../../contracts/interfaces/ICrossChainProofOfHumanity.sol";
  */
 contract MockCrossChainProofOfHumanity is ICrossChainProofOfHumanity {
     mapping(address => bool) private _isHuman;
-    mapping(bytes20 => address) private _boundTo;
+    mapping(address => bytes20) private _humanityOf;
     
     /**
      * @notice Sets whether an address is considered human.
@@ -21,12 +21,12 @@ contract MockCrossChainProofOfHumanity is ICrossChainProofOfHumanity {
     }
     
     /**
-     * @notice Sets the binding between a humanity ID and an address.
-     * @param humanityID The humanity ID.
-     * @param _address The address to bind to.
+     * @notice Sets the humanity ID for an address.
+     * @param _human The address to set humanity ID for.
+     * @param humanityID The humanity ID to set.
      */
-    function setBoundTo(bytes20 humanityID, address _address) external {
-        _boundTo[humanityID] = _address;
+    function setHumanityOf(address _human, bytes20 humanityID) external {
+        _humanityOf[_human] = humanityID;
     }
     
     /**
@@ -39,12 +39,12 @@ contract MockCrossChainProofOfHumanity is ICrossChainProofOfHumanity {
     }
     
     /**
-     * @notice Gets the address bound to a humanity ID.
-     * @param humanityID The humanity ID to check.
-     * @return The address bound to the humanity ID.
+     * @notice Gets the humanity ID for an address.
+     * @param _human The address to get the humanity ID for.
+     * @return The humanity ID for the address.
      */
-    function boundTo(bytes20 humanityID) external view override returns (address) {
-        return _boundTo[humanityID];
+    function humanityOf(address _human) external view override returns (bytes20) {
+        return _humanityOf[_human];
     }
     
     /**
@@ -53,7 +53,7 @@ contract MockCrossChainProofOfHumanity is ICrossChainProofOfHumanity {
      * @param _address The address to bind and mark as human.
      */
     function setupHuman(bytes20 humanityID, address _address) external {
-        _boundTo[humanityID] = _address;
+        _humanityOf[_address] = humanityID;
         _isHuman[_address] = true;
     }
 }

@@ -23,7 +23,7 @@ import type {
 export interface IRewardDistributorInterface extends Interface {
   getFunction(nameOrSignature: "claim" | "withdraw"): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "claim", values: [BytesLike]): string;
+  encodeFunctionData(functionFragment: "claim", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [BigNumberish]
@@ -76,7 +76,7 @@ export interface IRewardDistributor extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  claim: TypedContractMethod<[humanityID: BytesLike], [void], "nonpayable">;
+  claim: TypedContractMethod<[], [void], "nonpayable">;
 
   withdraw: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
 
@@ -86,7 +86,7 @@ export interface IRewardDistributor extends BaseContract {
 
   getFunction(
     nameOrSignature: "claim"
-  ): TypedContractMethod<[humanityID: BytesLike], [void], "nonpayable">;
+  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;

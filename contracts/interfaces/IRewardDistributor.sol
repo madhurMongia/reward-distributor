@@ -9,8 +9,7 @@ import "./ICrossChainProofOfHumanity.sol";
 interface IRewardDistributor {
     /// @notice Allows a verified human to claim their reward tokens.
     /// @dev Verifies the humanity ID through the Proof of Humanity contract and ensures no double claiming.
-    /// @param humanityID The unique identifier for the verified human (bytes20).
-    function claim(bytes20 humanityID) external;
+    function claim() external;
 
     /// @notice Withdraw rewards.
     /// @param amount The amount to withdraw.

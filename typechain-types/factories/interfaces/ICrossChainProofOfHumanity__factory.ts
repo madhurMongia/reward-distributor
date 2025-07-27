@@ -12,17 +12,17 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "bytes20",
-        name: "humanityID",
-        type: "bytes20",
+        internalType: "address",
+        name: "_human",
+        type: "address",
       },
     ],
-    name: "boundTo",
+    name: "humanityOf",
     outputs: [
       {
-        internalType: "address",
+        internalType: "bytes20",
         name: "",
-        type: "address",
+        type: "bytes20",
       },
     ],
     stateMutability: "view",

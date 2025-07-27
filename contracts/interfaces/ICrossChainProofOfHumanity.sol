@@ -9,8 +9,8 @@ interface ICrossChainProofOfHumanity {
     /// @return bool Whether the address is registered as human.
     function isHuman(address _human) external view returns (bool);
 
-    /// @notice Get the address bound to a humanity ID.
-    /// @param humanityID The humanity ID to check.
-    /// @return address The address bound to the humanity ID.
-    function boundTo(bytes20 humanityID) external view returns (address);
+    /// @notice Get the humanity ID for an address.
+    /// @param _human The address to get the humanity ID for.
+    /// @return bytes20 The humanity ID for the address.
+    function humanityOf(address _human) external view returns (bytes20);
 }
