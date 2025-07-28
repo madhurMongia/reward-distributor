@@ -233,6 +233,39 @@ describe("RewardDistributor", function () {
         .to.be.revertedWith("Insufficient balance");
     });
 
+    it("Should handle contract with funds for only 2 claims when 3rd address tries to claim", async function () {
+      // Deploy new contract
+      const RewardDistributorFactory = await ethers.getContractFactory("RewardDistributor");
+      const limitedFundsDistributor = await RewardDistributorFactory.deploy(
+        await mockToken.getAddress(),
+        AMOUNT_PER_CLAIM,
+        await mockProofOfHumanity.getAddress()
+      );
+
+      // Fund contract with exactly 2 * AMOUNT_PER_CLAIM tokens
+      const limitedFunds = AMOUNT_PER_CLAIM * BigInt(2);
+      await mockToken.transfer(await limitedFundsDistributor.getAddress(), limitedFunds);
+
+      // First two claims should succeed
+      await expect(limitedFundsDistributor.connect(user1).claim())
+        .to.emit(limitedFundsDistributor, "Claimed")
+        .withArgs(humanityId1, AMOUNT_PER_CLAIM);
+
+      await expect(limitedFundsDistributor.connect(user2).claim())
+        .to.emit(limitedFundsDistributor, "Claimed")
+        .withArgs(humanityId2, AMOUNT_PER_CLAIM);
+
+      // Contract should now have 0 balance
+      expect(await mockToken.balanceOf(await limitedFundsDistributor.getAddress())).to.equal(0);
+
+      // Third claim should fail due to insufficient balance
+      await expect(limitedFundsDistributor.connect(user3).claim())
+        .to.be.revertedWith("Insufficient balance");
+
+      // Verify the third user's humanity ID is still not marked as claimed
+      expect(await limitedFundsDistributor.claimed(humanityId3)).to.be.false;
+    });
+
     it("Should handle large amount per claim", async function () {
       const largeAmount = ethers.parseEther("1000000"); // 1 million tokens
       const RewardDistributorFactory = await ethers.getContractFactory("RewardDistributor");
