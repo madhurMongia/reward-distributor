@@ -83,7 +83,7 @@ describe("RewardDistributor", function () {
       
       await expect(rewardDistributor.connect(user1).claim())
         .to.emit(rewardDistributor, "Claimed")
-        .withArgs(humanityId1, AMOUNT_PER_CLAIM);
+        .withArgs(humanityId1);
 
       const finalBalance = await mockToken.balanceOf(user1.address);
       expect(finalBalance - initialBalance).to.equal(AMOUNT_PER_CLAIM);
@@ -216,7 +216,7 @@ describe("RewardDistributor", function () {
 
       await expect(zeroAmountDistributor.connect(user1).claim())
         .to.emit(zeroAmountDistributor, "Claimed")
-        .withArgs(humanityId1, 0);
+        .withArgs(humanityId1);
     });
 
     it("Should handle contract with insufficient token balance", async function () {
@@ -249,11 +249,11 @@ describe("RewardDistributor", function () {
       // First two claims should succeed
       await expect(limitedFundsDistributor.connect(user1).claim())
         .to.emit(limitedFundsDistributor, "Claimed")
-        .withArgs(humanityId1, AMOUNT_PER_CLAIM);
+        .withArgs(humanityId1);
 
       await expect(limitedFundsDistributor.connect(user2).claim())
         .to.emit(limitedFundsDistributor, "Claimed")
-        .withArgs(humanityId2, AMOUNT_PER_CLAIM);
+        .withArgs(humanityId2);
 
       // Contract should now have 0 balance
       expect(await mockToken.balanceOf(await limitedFundsDistributor.getAddress())).to.equal(0);
@@ -280,7 +280,7 @@ describe("RewardDistributor", function () {
 
       await expect(largeAmountDistributor.connect(user1).claim())
         .to.emit(largeAmountDistributor, "Claimed")
-        .withArgs(humanityId1, largeAmount);
+        .withArgs(humanityId1);
     });
   });
 

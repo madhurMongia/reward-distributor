@@ -37,8 +37,7 @@ contract RewardDistributor is IRewardDistributor {
 
     /// @notice Emitted when a verified human claims their reward.
     /// @param humanityID The humanity ID of the verified human.
-    /// @param amount The amount of tokens claimed.
-    event Claimed(bytes20 indexed humanityID, uint256 amount);
+    event Claimed(bytes20 indexed humanityID);
     
     /// @notice Emitted when the owner withdraws tokens from the contract.
     /// @param to The address that received the withdrawn tokens.
@@ -105,7 +104,7 @@ contract RewardDistributor is IRewardDistributor {
 
         // Transfer the tokens.
         token.transfer(msg.sender, amountPerClaim);
-        emit Claimed(humanityID, amountPerClaim);
+        emit Claimed(humanityID);
     }
     
     /**

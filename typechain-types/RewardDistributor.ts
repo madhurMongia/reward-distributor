@@ -81,11 +81,10 @@ export interface RewardDistributorInterface extends Interface {
 }
 
 export namespace ClaimedEvent {
-  export type InputTuple = [humanityID: BytesLike, amount: BigNumberish];
-  export type OutputTuple = [humanityID: string, amount: bigint];
+  export type InputTuple = [humanityID: BytesLike];
+  export type OutputTuple = [humanityID: string];
   export interface OutputObject {
     humanityID: string;
-    amount: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -234,7 +233,7 @@ export interface RewardDistributor extends BaseContract {
   >;
 
   filters: {
-    "Claimed(bytes20,uint256)": TypedContractEvent<
+    "Claimed(bytes20)": TypedContractEvent<
       ClaimedEvent.InputTuple,
       ClaimedEvent.OutputTuple,
       ClaimedEvent.OutputObject
