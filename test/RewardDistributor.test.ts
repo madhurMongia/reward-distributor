@@ -126,6 +126,25 @@ describe("RewardDistributor", function () {
       expect(await mockToken.balanceOf(user2.address)).to.equal(AMOUNT_PER_CLAIM);
       expect(await mockToken.balanceOf(user3.address)).to.equal(AMOUNT_PER_CLAIM);
     });
+
+    it("Should revert on failed token transfer during claim", async function () {
+      // Make token transfer fail
+      await mockToken.setTransferShouldFail(true);
+      
+      await expect(rewardDistributor.connect(user1).claim())
+        .to.be.revertedWith("transfer failed");
+      
+      expect(await rewardDistributor.claimed(humanityId1)).to.be.false;
+      
+      await mockToken.setTransferShouldFail(false);
+      
+      await expect(rewardDistributor.connect(user1).claim())
+        .to.emit(rewardDistributor, "Claimed")
+        .withArgs(humanityId1);
+      
+      expect(await rewardDistributor.claimed(humanityId1)).to.be.true;
+      expect(await mockToken.balanceOf(user1.address)).to.equal(AMOUNT_PER_CLAIM);
+    });
   });
 
   describe("Owner Functions", function () {
@@ -153,21 +172,15 @@ describe("RewardDistributor", function () {
           .to.be.revertedWith("not owner");
       });
 
-      it("Should handle failed token transfer during withdrawal", async function () {
+      it("Should revert on failed token transfer during withdrawal", async function () {
         const withdrawAmount = ethers.parseEther("1000");
         
         // Make token transfer fail
         await mockToken.setTransferShouldFail(true);
         
-        // The current contract doesn't check transfer return value, so it won't revert
-        // Instead, it will emit the Withdrawn event even though the transfer failed
+        // The contract now checks transfer return value, so it should revert
         await expect(rewardDistributor.connect(owner).withdraw(withdrawAmount))
-          .to.emit(rewardDistributor, "Withdrawn")
-          .withArgs(owner.address, withdrawAmount);
-        
-        // But the owner's balance shouldn't change since transfer failed
-        const ownerBalance = await mockToken.balanceOf(owner.address);
-        expect(ownerBalance).to.equal(ethers.parseEther("12500000")); // Initial balance unchanged (25M - 12.5M transferred to contract)
+          .to.be.revertedWith("transfer failed");
         
         // Reset the flag to prevent interference with other tests
         await mockToken.setTransferShouldFail(false);
@@ -227,8 +240,6 @@ describe("RewardDistributor", function () {
         AMOUNT_PER_CLAIM,
         await mockProofOfHumanity.getAddress()
       );
-
-      // This should fail because the contract has no tokens
       await expect(emptyDistributor.connect(user1).claim())
         .to.be.revertedWith("Insufficient balance");
     });
@@ -258,7 +269,6 @@ describe("RewardDistributor", function () {
       // Contract should now have 0 balance
       expect(await mockToken.balanceOf(await limitedFundsDistributor.getAddress())).to.equal(0);
 
-      // Third claim should fail due to insufficient balance
       await expect(limitedFundsDistributor.connect(user3).claim())
         .to.be.revertedWith("Insufficient balance");
 

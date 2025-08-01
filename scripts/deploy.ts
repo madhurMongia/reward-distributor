@@ -2,41 +2,11 @@ import { ethers } from "hardhat";
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { getNetworkConfig } from "./config/networks";
-
-const hre = require("hardhat");
-
-// Verification function
-async function verifyContract(
-  contractAddress: string,
-  constructorArgs: any[],
-  contractName: string = "RewardDistributor"
-): Promise<boolean> {
-  console.log(`\n🔍 Verifying ${contractName} on explorer...`);
-  
-  try {
-    await hre.run("verify:verify", {
-      address: contractAddress,
-      constructorArguments: constructorArgs,
-    });
-    console.log(`✅ ${contractName} verified successfully on explorer!`);
-    return true;
-  } catch (error: any) {
-    if (error.message.toLowerCase().includes("already verified")) {
-      console.log(`✅ ${contractName} is already verified on explorer!`);
-      return true;
-    } else {
-      console.error(`❌ Explorer verification failed for ${contractName}:`, error.message);
-      console.log(`💡 You can verify manually later using: npm run verify --network ${await ethers.provider.getNetwork().then(n => n.name)}`);
-      return false;
-    }
-  }
-}
+import { verifyContract } from "./verify";
 
 async function main() {
-  // Parse command line arguments
-  const args = process.argv.slice(2);
-  const shouldVerify = args.includes('--verify') || args.includes('-v');
-  const skipVerify = args.includes('--skip-verify');
+  const shouldVerify = process.env.VERIFY === 'true';
+  const skipVerify = process.env.SKIP_VERIFY === 'true';
   
   const [deployer] = await ethers.getSigners();
   const networkName = await ethers.provider.getNetwork().then(n => n.name);

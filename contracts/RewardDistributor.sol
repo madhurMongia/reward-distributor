@@ -103,7 +103,7 @@ contract RewardDistributor is IRewardDistributor {
         claimed[humanityID] = true;
 
         // Transfer the tokens.
-        token.transfer(msg.sender, amountPerClaim);
+        require(token.transfer(msg.sender, amountPerClaim), "transfer failed");
         emit Claimed(humanityID);
     }
     
@@ -114,7 +114,7 @@ contract RewardDistributor is IRewardDistributor {
      * @param amount The amount of tokens to withdraw.
      */
     function withdraw(uint256 amount) external onlyOwner() {
-        token.transfer(owner, amount);
+        require(token.transfer(owner, amount), "transfer failed");
         emit Withdrawn(owner, amount);
     }
 }

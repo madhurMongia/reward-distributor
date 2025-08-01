@@ -26,11 +26,11 @@ export const networkConfigs: Record<string, NetworkConfig> = {
   },
   gnosis: {
     // PNK token address on Gnosis mainnet
-    token: "0x0000000000000000000000000000000000000000",
+    token: "0xcb3231aBA3b451343e0Fddfc45883c842f223846",
     // Amount per claim in wei (e.g., 100 PNK = 100 * 10^18)
     amountPerClaim: (2500 * 10 ** 18).toString(), // 2500 tokens with 18 decimals
     // CrossChainProofOfHumanity contract address on Gnosis
-    crossChainProofOfHumanity: "0x0000000000000000000000000000000000000000",
+    crossChainProofOfHumanity: "0x16044E1063C08670f8653055A786b7CC2034d2b0",
     explorer: {
       name: "GnosisScan",
       url: "https://gnosisscan.io",

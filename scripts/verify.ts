@@ -3,6 +3,8 @@ import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { getNetworkConfig } from "./config/networks";
 
+const hre = require("hardhat");
+
 interface DeploymentInfo {
   contractName: string;
   contractAddress: string;
@@ -16,11 +18,11 @@ interface DeploymentInfo {
   transactionHash?: string;
 }
 
-async function verifyContract(
+export async function verifyContract(
   contractAddress: string,
   constructorArgs: any[],
   contractName: string = "RewardDistributor"
-) {
+): Promise<boolean> {
   console.log(`\n🔍 Verifying ${contractName} at ${contractAddress}...`);
   
   try {
@@ -28,20 +30,22 @@ async function verifyContract(
       address: contractAddress,
       constructorArguments: constructorArgs,
     });
-    console.log(`✅ ${contractName} verified successfully!`);
+    console.log(`✅ ${contractName} verified successfully on explorer!`);
     return true;
   } catch (error: any) {
     if (error.message.toLowerCase().includes("already verified")) {
-      console.log(`✅ ${contractName} is already verified!`);
+      console.log(`✅ ${contractName} is already verified on explorer!`);
       return true;
     } else {
-      console.error(`❌ Verification failed for ${contractName}:`, error.message);
+      console.error(`❌ Explorer verification failed for ${contractName}:`, error.message);
+      const networkName = await require("hardhat").ethers.provider.getNetwork().then((n: any) => n.name);
+      console.log(`💡 You can verify manually later using: npm run verify --network ${networkName}`);
       return false;
     }
   }
 }
 
-async function getExplorerUrl(contractAddress: string, networkName: string): Promise<string> {
+export async function getExplorerUrl(contractAddress: string, networkName: string): Promise<string> {
   const config = getNetworkConfig(networkName);
   return `${config.explorer.url}/address/${contractAddress}`;
 }
@@ -134,18 +138,16 @@ Make sure you have the appropriate API keys set in your .env file:
   `);
   process.exit(0);
 }
-
-// Import hre for verification
-const hre = require("hardhat");
-
-// Execute verification
-main()
-  .then(() => {
-    console.log(`\n🎉 Verification completed successfully!`);
-    process.exit(0);
-  })
-  .catch((error) => {
-    console.error("❌ Verification failed:");
-    console.error(error);
-    process.exit(1);
-  });
+if (require.main === module) {
+  // Execute verification
+  main()
+    .then(() => {
+      console.log(`\n🎉 Verification completed successfully!`);
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error("❌ Verification failed:");
+      console.error(error);
+      process.exit(1);
+    });
+}

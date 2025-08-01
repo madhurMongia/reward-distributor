@@ -7,7 +7,10 @@
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat run scripts/deploy.ts",
-    "verify": "npx hardhat run scripts/verify.ts",
+    "deploy:chaido": "npx hardhat run scripts/deploy.ts --network chaido",
+    "deploy:chaido:verify": "VERIFY=true npx hardhat run scripts/deploy.ts --network chaido",
+    "deploy:gnosis": "npx hardhat run scripts/deploy.ts --network gnosis",
+    "deploy:gnosis:verify": "VERIFY=true npx hardhat run scripts/deploy.ts --network gnosis",
     "verify:chaido": "npx hardhat run scripts/verify.ts --network chaido",
     "verify:gnosis": "npx hardhat run scripts/verify.ts --network gnosis",
     "node": "npx hardhat node"
