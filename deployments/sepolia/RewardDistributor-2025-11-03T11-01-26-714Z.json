@@ -1,0 +1,12 @@
+{
+  "contractName": "RewardDistributor",
+  "contractAddress": "0xbe372A981fCFa743C02C7ddeee728e5eD74Ea11E",
+  "deployer": "0xcAf9AdE1fDDf1b31d490A4629ADA638d104e9543",
+  "deploymentTime": "2025-11-03T11:01:26.714Z",
+  "constructorArgs": {
+    "token": "0xA1eE4D32bdBcA69cdb445D66fAA3804aFFa24bFE",
+    "amountPerClaim": "1000000000000000000000",
+    "crossChainProofOfHumanity": "0x5142177398E94ce45b19c59cBA5d3d71a1c34202"
+  },
+  "transactionHash": "0x0794ef48176d882e2761d34d5506078fa76dc6e298a33f2be27d0650238f2a74"
+}

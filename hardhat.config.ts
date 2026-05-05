@@ -26,12 +26,18 @@ const config: HardhatUserConfig = {
       url: "https://rpc.gnosischain.com",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 100
+    },
+    sepolia: {
+      url: process.env.SEPOLIA_RPC_URL || "https://ethereum-sepolia-rpc.publicnode.com",
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      chainId: 11155111
     }
   },
   etherscan: {
     apiKey: {
-      gnosis: process.env.GNOSISSCAN_API_KEY || "",
-      chiado: process.env.BLOCKSCOUT_API_KEY || "abc123" // Blockscout doesn't require API key
+      gnosis: process.env.BLOCKSCOUT_API_KEY || "abc123",
+      chiado: process.env.BLOCKSCOUT_API_KEY || "abc123",
+      sepolia: process.env.ETHERSCAN_API_KEY || ""
     },
     customChains: [
       {
@@ -46,8 +52,8 @@ const config: HardhatUserConfig = {
         network: "gnosis",
         chainId: 100,
         urls: {
-          apiURL: "https://api.gnosisscan.io/api",
-          browserURL: "https://gnosisscan.io"
+          apiURL: "https://gnosis.blockscout.com/api",
+          browserURL: "https://gnosis.blockscout.com"
         }
       }
     ]
