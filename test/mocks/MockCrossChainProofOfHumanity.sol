@@ -46,6 +46,17 @@ contract MockCrossChainProofOfHumanity is ICrossChainProofOfHumanity {
     function humanityOf(address _human) external view override returns (bytes20) {
         return _humanityOf[_human];
     }
+
+    function boundTo(bytes20 humanityID) external view override returns (address) {
+        for (uint256 i = 0; i < _humans.length; i++) {
+            address human = _humans[i];
+            if (_humanityOf[human] == humanityID && _isHuman[human]) {
+                return human;
+            }
+        }
+
+        return address(0);
+    }
     
     /**
      * @notice Helper function to set up a complete human verification.
@@ -53,7 +64,12 @@ contract MockCrossChainProofOfHumanity is ICrossChainProofOfHumanity {
      * @param _address The address to bind and mark as human.
      */
     function setupHuman(bytes20 humanityID, address _address) external {
+        if (_humanityOf[_address] == bytes20(0x0)) {
+            _humans.push(_address);
+        }
         _humanityOf[_address] = humanityID;
         _isHuman[_address] = true;
     }
+
+    address[] private _humans;
 }

@@ -13,4 +13,9 @@ interface ICrossChainProofOfHumanity {
     /// @param _human The address to get the humanity ID for.
     /// @return bytes20 The humanity ID for the address.
     function humanityOf(address _human) external view returns (bytes20);
+
+    /// @notice Get the current owner of a humanity ID.
+    /// @param _humanityId The humanity ID to get the owner for.
+    /// @return address The owner of the humanity ID, or zero address if it is not valid.
+    function boundTo(bytes20 _humanityId) external view returns (address);
 }

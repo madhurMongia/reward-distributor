@@ -26,6 +26,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IRewardDistributor__factory>;
     getContractFactory(
+      name: "IRewardDistributorV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IRewardDistributorV2__factory>;
+    getContractFactory(
       name: "MockCrossChainProofOfHumanity",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockCrossChainProofOfHumanity__factory>;
@@ -37,6 +41,10 @@ declare module "hardhat/types/runtime" {
       name: "RewardDistributor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.RewardDistributor__factory>;
+    getContractFactory(
+      name: "RewardDistributorV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.RewardDistributorV2__factory>;
 
     getContractAt(
       name: "ICrossChainProofOfHumanity",
@@ -54,6 +62,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IRewardDistributor>;
     getContractAt(
+      name: "IRewardDistributorV2",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IRewardDistributorV2>;
+    getContractAt(
       name: "MockCrossChainProofOfHumanity",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -68,6 +81,11 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.RewardDistributor>;
+    getContractAt(
+      name: "RewardDistributorV2",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.RewardDistributorV2>;
 
     deployContract(
       name: "ICrossChainProofOfHumanity",
@@ -82,6 +100,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IRewardDistributor>;
     deployContract(
+      name: "IRewardDistributorV2",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IRewardDistributorV2>;
+    deployContract(
       name: "MockCrossChainProofOfHumanity",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockCrossChainProofOfHumanity>;
@@ -93,6 +115,10 @@ declare module "hardhat/types/runtime" {
       name: "RewardDistributor",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.RewardDistributor>;
+    deployContract(
+      name: "RewardDistributorV2",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.RewardDistributorV2>;
 
     deployContract(
       name: "ICrossChainProofOfHumanity",
@@ -110,6 +136,11 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IRewardDistributor>;
     deployContract(
+      name: "IRewardDistributorV2",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IRewardDistributorV2>;
+    deployContract(
       name: "MockCrossChainProofOfHumanity",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -124,6 +155,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.RewardDistributor>;
+    deployContract(
+      name: "RewardDistributorV2",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.RewardDistributorV2>;
 
     // default types
     getContractFactory(

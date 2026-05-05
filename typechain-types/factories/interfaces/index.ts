@@ -4,3 +4,4 @@
 export { ICrossChainProofOfHumanity__factory } from "./ICrossChainProofOfHumanity__factory";
 export { IERC20__factory } from "./IERC20__factory";
 export { IRewardDistributor__factory } from "./IRewardDistributor__factory";
+export { IRewardDistributorV2__factory } from "./IRewardDistributorV2__factory";

@@ -23,6 +23,7 @@ import type {
 export interface MockCrossChainProofOfHumanityInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "boundTo"
       | "humanityOf"
       | "isHuman"
       | "setHumanityOf"
@@ -30,6 +31,7 @@ export interface MockCrossChainProofOfHumanityInterface extends Interface {
       | "setupHuman"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "boundTo", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "humanityOf",
     values: [AddressLike]
@@ -51,6 +53,7 @@ export interface MockCrossChainProofOfHumanityInterface extends Interface {
     values: [BytesLike, AddressLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "boundTo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "humanityOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isHuman", data: BytesLike): Result;
   decodeFunctionResult(
@@ -104,6 +107,8 @@ export interface MockCrossChainProofOfHumanity extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  boundTo: TypedContractMethod<[humanityID: BytesLike], [string], "view">;
+
   humanityOf: TypedContractMethod<[_human: AddressLike], [string], "view">;
 
   isHuman: TypedContractMethod<[_human: AddressLike], [boolean], "view">;
@@ -130,6 +135,9 @@ export interface MockCrossChainProofOfHumanity extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "boundTo"
+  ): TypedContractMethod<[humanityID: BytesLike], [string], "view">;
   getFunction(
     nameOrSignature: "humanityOf"
   ): TypedContractMethod<[_human: AddressLike], [string], "view">;

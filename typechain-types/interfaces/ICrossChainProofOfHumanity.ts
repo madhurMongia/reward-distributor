@@ -21,8 +21,11 @@ import type {
 } from "../common";
 
 export interface ICrossChainProofOfHumanityInterface extends Interface {
-  getFunction(nameOrSignature: "humanityOf" | "isHuman"): FunctionFragment;
+  getFunction(
+    nameOrSignature: "boundTo" | "humanityOf" | "isHuman"
+  ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "boundTo", values: [BytesLike]): string;
   encodeFunctionData(
     functionFragment: "humanityOf",
     values: [AddressLike]
@@ -32,6 +35,7 @@ export interface ICrossChainProofOfHumanityInterface extends Interface {
     values: [AddressLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "boundTo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "humanityOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isHuman", data: BytesLike): Result;
 }
@@ -79,6 +83,8 @@ export interface ICrossChainProofOfHumanity extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  boundTo: TypedContractMethod<[_humanityId: BytesLike], [string], "view">;
+
   humanityOf: TypedContractMethod<[_human: AddressLike], [string], "view">;
 
   isHuman: TypedContractMethod<[_human: AddressLike], [boolean], "view">;
@@ -87,6 +93,9 @@ export interface ICrossChainProofOfHumanity extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "boundTo"
+  ): TypedContractMethod<[_humanityId: BytesLike], [string], "view">;
   getFunction(
     nameOrSignature: "humanityOf"
   ): TypedContractMethod<[_human: AddressLike], [string], "view">;

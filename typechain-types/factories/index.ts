@@ -4,3 +4,4 @@
 export * as interfaces from "./interfaces";
 export * as mocks from "./mocks";
 export { RewardDistributor__factory } from "./RewardDistributor__factory";
+export { RewardDistributorV2__factory } from "./RewardDistributorV2__factory";
