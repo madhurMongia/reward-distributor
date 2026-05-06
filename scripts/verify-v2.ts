@@ -3,7 +3,7 @@ import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { getNetworkConfig } from "./config/networks";
 
-const { ethers } = hre as any;
+const { ethers, network } = hre as any;
 
 interface DeploymentInfo {
   contractName: string;
@@ -12,8 +12,9 @@ interface DeploymentInfo {
   deploymentTime: string;
   constructorArgs: {
     token: string;
-    amountPerClaim: string;
+    maxAmount: string;
     crossChainProofOfHumanity: string;
+    voucherSigner: string;
   };
   transactionHash?: string;
 }
@@ -21,7 +22,7 @@ interface DeploymentInfo {
 export async function verifyContract(
   contractAddress: string,
   constructorArgs: any[],
-  contractName: string = "RewardDistributor"
+  contractName: string = "RewardDistributorV2"
 ): Promise<boolean> {
   console.log(`\n🔍 Verifying ${contractName} at ${contractAddress}...`);
   
@@ -38,8 +39,8 @@ export async function verifyContract(
       return true;
     } else {
       console.error(`❌ Explorer verification failed for ${contractName}:`, error.message);
-      const networkName = await require("hardhat").ethers.provider.getNetwork().then((n: any) => n.name);
-      console.log(`💡 You can verify manually later using: npx hardhat run scripts/verify.ts --network ${networkName}`);
+      const networkName = network.name;
+      console.log(`💡 You can verify manually later using: npx hardhat run scripts/verify-v2.ts --network ${networkName}`);
       return false;
     }
   }
@@ -51,11 +52,11 @@ export async function getExplorerUrl(contractAddress: string, networkName: strin
 }
 
 async function main() {
-  const networkName = await ethers.provider.getNetwork().then((n: any) => n.name);
+  const networkName = network.name;
   console.log(`🌐 Network: ${networkName}`);
   
   // Check if deployment file exists
-  const deploymentFile = join(process.cwd(), "deployments", networkName, "RewardDistributor.json");
+  const deploymentFile = join(process.cwd(), "deployments", networkName, "RewardDistributorV2.json");
   
   if (!existsSync(deploymentFile)) {
     console.error(`❌ No deployment found for network: ${networkName}`);
@@ -81,14 +82,16 @@ async function main() {
   // Prepare constructor arguments
   const constructorArgs = [
     deploymentInfo.constructorArgs.token,
-    deploymentInfo.constructorArgs.amountPerClaim,
-    deploymentInfo.constructorArgs.crossChainProofOfHumanity
+    deploymentInfo.constructorArgs.maxAmount,
+    deploymentInfo.constructorArgs.crossChainProofOfHumanity,
+    deploymentInfo.constructorArgs.voucherSigner
   ];
 
   console.log(`\n🔧 Constructor arguments:`);
   console.log(`   Token: ${constructorArgs[0]}`);
-  console.log(`   Amount per claim: ${ethers.formatEther(constructorArgs[1])} tokens`);
+  console.log(`   Max voucher amount: ${ethers.formatEther(constructorArgs[1])} tokens`);
   console.log(`   CrossChainProofOfHumanity: ${constructorArgs[2]}`);
+  console.log(`   Voucher signer: ${constructorArgs[3]}`);
 
   // Verify the contract
   const verified = await verifyContract(
@@ -121,14 +124,14 @@ if (args.includes('--help') || args.includes('-h')) {
 📖 Contract Verification Script
 
 Usage:
-  npx hardhat run scripts/verify.ts --network <network>
+  npx hardhat run scripts/verify-v2.ts --network <network>
 
 Examples:
-  npx hardhat run scripts/verify.ts --network chaido
-  npx hardhat run scripts/verify.ts --network gnosis
+  npx hardhat run scripts/verify-v2.ts --network chaido
+  npx hardhat run scripts/verify-v2.ts --network gnosis
 
 This script will:
-1. Read the latest deployment info from deployments/<network>/RewardDistributor.json
+1. Read the latest deployment info from deployments/<network>/RewardDistributorV2.json
 2. Verify the contract on the network's block explorer
 3. Display the explorer URL for the verified contract
 

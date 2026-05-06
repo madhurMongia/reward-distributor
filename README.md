@@ -8,6 +8,17 @@ A smart contract that distributes ERC20 token rewards to verified humans through
 - `_amountPerClaim` - Fixed amount of tokens each verified human can claim
 - `_crossChainProofOfHumanity` - Address of the Proof of Humanity contract
 
+## RewardDistributorV2
+
+`RewardDistributorV2` distributes referral rewards with backend signed EIP-712 vouchers.
+
+### V2 Constructor Parameters
+
+- `_token` - Address of the ERC20 token to distribute
+- `_maxAmount` - Maximum token amount a signed voucher can authorize
+- `_crossChainProofOfHumanity` - Address of the Cross-Chain Proof of Humanity contract
+- `_voucherSigner` - Backend signer authorized to sign referral reward vouchers
+
 ## Local Setup
 
 1. Install dependencies:
@@ -50,27 +61,51 @@ Before deployment, update the contract addresses in [`scripts/config/networks.ts
 export const networkConfigs: Record<string, NetworkConfig> = {
   chaido: {
     token: "0x...", // Replace with actual PNK token address
-    amountPerClaim: "100000000000000000000", // 100 tokens (18 decimals)
-    crossChainProofOfHumanity: "0x..." // Replace with actual PoH contract address
+    amountPerClaim: "100000000000000000000", // V1 fixed claim amount
+    maxAmount: "100000000000000000000", // V2 maximum voucher amount
+    crossChainProofOfHumanity: "0x...", // Replace with actual PoH contract address
+    voucherSigner: "0x..." // Replace with backend voucher signer address
   },
   gnosis: {
     token: "0x...", // Replace with actual PNK token address
-    amountPerClaim: "100000000000000000000", // 100 tokens (18 decimals)
-    crossChainProofOfHumanity: "0x..." // Replace with actual PoH contract address
+    amountPerClaim: "100000000000000000000", // V1 fixed claim amount
+    maxAmount: "100000000000000000000", // V2 maximum voucher amount
+    crossChainProofOfHumanity: "0x...", // Replace with actual PoH contract address
+    voucherSigner: "0x..." // Replace with backend voucher signer address
   }
 };
 ```
 
 ## Deployment
 
-### Deploy to Chaido Testnet
+`scripts/deploy.ts` deploys `RewardDistributor`. `scripts/deploy-v2.ts` deploys `RewardDistributorV2` using the per-network `voucherSigner` from `scripts/config/networks.ts`.
+
+### Deploy V1 to Chaido Testnet
 ```bash
 npx hardhat run scripts/deploy.ts --network chaido
+# deploy and verify in one run
+VERIFY=true npx hardhat run scripts/deploy.ts --network chaido
 ```
 
-### Deploy to Gnosis Mainnet
+### Deploy V1 to Gnosis Mainnet
 ```bash
 npx hardhat run scripts/deploy.ts --network gnosis
+# deploy and verify in one run
+VERIFY=true npx hardhat run scripts/deploy.ts --network gnosis
+```
+
+### Deploy V2 to Chaido Testnet
+```bash
+npx hardhat run scripts/deploy-v2.ts --network chaido
+# deploy and verify in one run
+VERIFY=true npx hardhat run scripts/deploy-v2.ts --network chaido
+```
+
+### Deploy V2 to Gnosis Mainnet
+```bash
+npx hardhat run scripts/deploy-v2.ts --network gnosis
+# deploy and verify in one run
+VERIFY=true npx hardhat run scripts/deploy-v2.ts --network gnosis
 ```
 
 ### Deploy to Local Network (for testing)
@@ -78,22 +113,35 @@ npx hardhat run scripts/deploy.ts --network gnosis
 # Terminal 1: Start local node
 npx hardhat node
 
-# Terminal 2: Deploy contract
+# Terminal 2: Deploy V1
 npx hardhat run scripts/deploy.ts --network localhost
+
+# Or deploy V2
+npx hardhat run scripts/deploy-v2.ts --network localhost
 ```
 
 ## Contract Verification
 
 After deployment, you can verify your contracts on block explorers:
 
-### Verify on Chaido Testnet
+### Verify V1 on Chaido Testnet
 ```bash
 npm run verify:chaido
 ```
 
-### Verify on Gnosis Mainnet
+### Verify V1 on Gnosis Mainnet
 ```bash
 npm run verify:gnosis
+```
+
+### Verify V2 on Chaido Testnet
+```bash
+npm run verify:v2:chaido
+```
+
+### Verify V2 on Gnosis Mainnet
+```bash
+npm run verify:v2:gnosis
 ```
 
 ### Alternative Verification Method
@@ -101,10 +149,17 @@ You can also run verification directly with Hardhat:
 ```bash
 npx hardhat run scripts/verify.ts --network chaido
 npx hardhat run scripts/verify.ts --network gnosis
+npx hardhat run scripts/verify-v2.ts --network chaido
+npx hardhat run scripts/verify-v2.ts --network gnosis
 ```
 
-The verification script will:
+The V1 verification script will:
 1. Read the latest deployment info from `deployments/<network>/RewardDistributor.json`
+2. Verify the contract on the network's block explorer
+3. Display the explorer URL for the verified contract
+
+The V2 verification script will:
+1. Read the latest deployment info from `deployments/<network>/RewardDistributorV2.json`
 2. Verify the contract on the network's block explorer
 3. Display the explorer URL for the verified contract
 
@@ -124,9 +179,11 @@ Deployment information is automatically saved to multiple files for each network
 
 ```
 deployments/[network]/
-├── RewardDistributor.json              # Latest deployment (always current)
-├── RewardDistributor-[timestamp].json  # Timestamped deployment files
-└── deployments.json                    # Deployment history
+├── RewardDistributor.json                # Latest V1 deployment, if deployed with a V1 script
+├── RewardDistributor-[timestamp].json    # Timestamped V1 deployment files
+├── RewardDistributorV2.json              # Latest V2 deployment, if deployed with the V2 script
+├── RewardDistributorV2-[timestamp].json  # Timestamped V2 deployment files
+└── deployments.json                      # Deployment history
 ```
 
 Each deployment creates:
