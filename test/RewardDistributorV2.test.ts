@@ -317,6 +317,14 @@ describe("RewardDistributorV2", function () {
 
       await expect(claim(voucher)).to.be.revertedWith("invalid referrer");
     });
+
+    it("rejects claims when the referee is no longer human", async function () {
+      const { proofOfHumanity, referee, signVoucher, claim } = await deployFixture();
+      const voucher = await signVoucher();
+      await proofOfHumanity.setIsHuman(referee.address, false);
+
+      await expect(claim(voucher)).to.be.revertedWith("invalid referee");
+    });
   });
 
   describe("withdraw", function () {

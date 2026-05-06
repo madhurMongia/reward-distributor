@@ -1,15 +1,17 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { getNetworkConfig } from "./config/networks";
 import { verifyContract } from "./verify";
+
+const { ethers } = hre as any;
 
 async function main() {
   const shouldVerify = process.env.VERIFY === 'true';
   const skipVerify = process.env.SKIP_VERIFY === 'true';
   
   const [deployer] = await ethers.getSigners();
-  const networkName = await ethers.provider.getNetwork().then(n => n.name);
+  const networkName = await ethers.provider.getNetwork().then((n: any) => n.name);
   console.log("Deploying RewardDistributor contract...");
   console.log("Network:", networkName);
   console.log("Deployer address:", deployer.address);
