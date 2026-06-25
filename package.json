@@ -22,6 +22,8 @@
     "verify:chaido": "npx hardhat run scripts/verify.ts --network chaido",
     "verify:gnosis": "npx hardhat run scripts/verify.ts --network gnosis",
     "verify:sepolia": "npx hardhat run scripts/verify.ts --network sepolia",
+    "verify:referral-payout:chaido": "npx hardhat run scripts/verify-referral-payout-distributor.ts --network chaido",
+    "verify:referral-payout:gnosis": "npx hardhat run scripts/verify-referral-payout-distributor.ts --network gnosis",
     "node": "npx hardhat node"
   },
   "keywords": [
