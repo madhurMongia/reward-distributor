@@ -3,4 +3,5 @@
 /* eslint-disable */
 export { ICrossChainProofOfHumanity__factory } from "./ICrossChainProofOfHumanity__factory";
 export { IERC20__factory } from "./IERC20__factory";
+export { IReferralPayoutDistributor__factory } from "./IReferralPayoutDistributor__factory";
 export { IRewardDistributor__factory } from "./IRewardDistributor__factory";

@@ -22,6 +22,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
+      name: "IReferralPayoutDistributor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IReferralPayoutDistributor__factory>;
+    getContractFactory(
       name: "IRewardDistributor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IRewardDistributor__factory>;
@@ -33,6 +37,10 @@ declare module "hardhat/types/runtime" {
       name: "MockERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockERC20__factory>;
+    getContractFactory(
+      name: "ReferralPayoutDistributor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ReferralPayoutDistributor__factory>;
     getContractFactory(
       name: "RewardDistributor",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -49,6 +57,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
+      name: "IReferralPayoutDistributor",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IReferralPayoutDistributor>;
+    getContractAt(
       name: "IRewardDistributor",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -63,6 +76,11 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.MockERC20>;
+    getContractAt(
+      name: "ReferralPayoutDistributor",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ReferralPayoutDistributor>;
     getContractAt(
       name: "RewardDistributor",
       address: string | ethers.Addressable,
@@ -78,6 +96,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IERC20>;
     deployContract(
+      name: "IReferralPayoutDistributor",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IReferralPayoutDistributor>;
+    deployContract(
       name: "IRewardDistributor",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IRewardDistributor>;
@@ -89,6 +111,10 @@ declare module "hardhat/types/runtime" {
       name: "MockERC20",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockERC20>;
+    deployContract(
+      name: "ReferralPayoutDistributor",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ReferralPayoutDistributor>;
     deployContract(
       name: "RewardDistributor",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -105,6 +131,11 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IERC20>;
     deployContract(
+      name: "IReferralPayoutDistributor",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IReferralPayoutDistributor>;
+    deployContract(
       name: "IRewardDistributor",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -119,6 +150,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockERC20>;
+    deployContract(
+      name: "ReferralPayoutDistributor",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ReferralPayoutDistributor>;
     deployContract(
       name: "RewardDistributor",
       args: any[],
