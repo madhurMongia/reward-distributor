@@ -48,19 +48,6 @@ async function main() {
   console.log("Contract address:", contractAddress);
   console.log("Transaction hash:", referralPayoutDistributor.deploymentTransaction()?.hash);
 
-  // Verify contract deployment
-  console.log("\nVerifying deployment...");
-  const [deployedToken, deployedOwner, deployedOperator] = await Promise.all([
-    referralPayoutDistributor.token(),
-    referralPayoutDistributor.owner(),
-    referralPayoutDistributor.operator(),
-  ]);
-
-  console.log("\n✅ Verification complete:");
-  console.log("Token:", deployedToken);
-  console.log("Owner:", deployedOwner);
-  console.log("Operator:", deployedOperator);
-
   // Save deployment info to deployments folder
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
   const deploymentInfo = {
