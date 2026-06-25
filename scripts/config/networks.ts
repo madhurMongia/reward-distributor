@@ -2,6 +2,7 @@ export interface NetworkConfig {
   token: string;
   amountPerClaim: string;
   crossChainProofOfHumanity: string;
+  referralPayoutOperator: string;
   explorer: {
     name: string;
     url: string;
@@ -18,6 +19,8 @@ export const networkConfigs: Record<string, NetworkConfig> = {
     amountPerClaim: (1000n * 10n ** 18n).toString(), // 1000 tokens with 18 decimals
     // CrossChainProofOfHumanity contract address on Chaido
     crossChainProofOfHumanity: "0xBFb98b8F785dE02F35e4eAa8b83a4c9390f75f99",
+    // Referral payout operator on Chaido
+    referralPayoutOperator: "0xad1af42EdECdeC52F5AD369ea7643Dc82498aAD8",
     explorer: {
       name: "Blockscout",
       url: "https://gnosis-chiado.blockscout.com",
@@ -31,6 +34,8 @@ export const networkConfigs: Record<string, NetworkConfig> = {
     amountPerClaim: (1200n * 10n ** 18n).toString(), // 1200 tokens with 18 decimals
     // CrossChainProofOfHumanity contract address on Gnosis
     crossChainProofOfHumanity: "0x16044E1063C08670f8653055A786b7CC2034d2b0",
+    // Referral payout operator on Gnosis
+    referralPayoutOperator: "0x0000000000000000000000000000000000000000",
     explorer: {
       name: "Blockscout",
       url: "https://gnosis.blockscout.com",
@@ -45,6 +50,8 @@ export const networkConfigs: Record<string, NetworkConfig> = {
     amountPerClaim: (1000n * 10n ** 18n).toString(), // 1000 tokens with 18 decimals
     // CrossChainProofOfHumanity contract address on Sepolia.
     crossChainProofOfHumanity: "0x5142177398E94ce45b19c59cBA5d3d71a1c34202",
+    // Referral payout operator on Sepolia.
+    referralPayoutOperator: "0x0000000000000000000000000000000000000000",
     explorer: {
       name: "Etherscan",
       url: "https://sepolia.etherscan.io",

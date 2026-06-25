@@ -3,4 +3,5 @@
 /* eslint-disable */
 export * as interfaces from "./interfaces";
 export * as mocks from "./mocks";
+export { ReferralPayoutDistributor__factory } from "./ReferralPayoutDistributor__factory";
 export { RewardDistributor__factory } from "./RewardDistributor__factory";

@@ -1,0 +1,11 @@
+{
+  "contractName": "ReferralPayoutDistributor",
+  "contractAddress": "0x810A3F4A0860a06Dc624B09CC2F407D99aaEa3b0",
+  "deployer": "0xad1af42EdECdeC52F5AD369ea7643Dc82498aAD8",
+  "deploymentTime": "2026-06-25T13:07:22.382Z",
+  "constructorArgs": {
+    "token": "0xA353A70c8B3C7d38A869436d4CDeBe8e5611681a",
+    "operator": "0xCfb3ACE587dDe04d1F2CB38476Fe114D12dcE895"
+  },
+  "transactionHash": "0xfc6a23ed96caaf1302af5d7d6cefc5269a3f6cfa8ff70f86a04269d4f89886a4"
+}

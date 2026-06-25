@@ -3,4 +3,5 @@
 /* eslint-disable */
 export type { ICrossChainProofOfHumanity } from "./ICrossChainProofOfHumanity";
 export type { IERC20 } from "./IERC20";
+export type { IReferralPayoutDistributor } from "./IReferralPayoutDistributor";
 export type { IRewardDistributor } from "./IRewardDistributor";
